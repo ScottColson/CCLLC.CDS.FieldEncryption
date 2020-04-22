@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CCLLC.Azure.Secrets, Version=1.0.0.0, Culture=neutral, PublicKeyToken=489a000acd08aae3, processorArchitecture=MSIL">
+      <HintPath>..\packages\CCLLC.Azure.Secrets.1.0.0-beta\lib\net462\CCLLC.Azure.Secrets.dll</HintPath>
+    </Reference>
     <Reference Include="CCLLC.Core.ProcessModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=506847acdbcda1d9, processorArchitecture=MSIL">
       <HintPath>..\packages\CCLLC.Core.ProcessModel.1.1.3\lib\net462\CCLLC.Core.ProcessModel.dll</HintPath>
     </Reference>
@@ -85,7 +88,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="..\..\..\CCLLCAzureSecrets\CCLLC.Azure.Secrets\CCLLC.Azure.Secrets.projitems" Label="Shared" />
   <Import Project="..\Shared Projects\CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
