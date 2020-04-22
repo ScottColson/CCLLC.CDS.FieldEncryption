@@ -88,6 +88,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="..\Shared Projects\CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems" Label="Shared" />
+  <Import Project="..\CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

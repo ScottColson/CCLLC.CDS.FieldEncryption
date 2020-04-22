@@ -3,31 +3,30 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{26C42742-2AB4-4439-A89F-60D2A5EF1014}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CCLLC.CDS.FieldEncryption", "Shared Projects\CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.shproj", "{B1AEA547-18FE-477C-A30E-6459F5D6E070}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CCLLC.CDS.FieldEncryption", "CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.shproj", "{B1AEA547-18FE-477C-A30E-6459F5D6E070}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCLLC.CDS.FieldEncryption.Lib", "CCLLC.CDS.FieldEncryption.Lib\CCLLC.CDS.FieldEncryption.Lib.csproj", "{35F756D4-917B-4CC5-9941-9784E6C95F0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCLLC.CDS.FieldEncryption.Sample", "CCLLC.CDS.FieldEncryption.Sample\CCLLC.CDS.FieldEncryption.Sample.csproj", "{94D0D4F3-F0E7-4D0F-A1CC-3D8A2DB88E62}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Shared Projects\CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems*{26c42742-2ab4-4439-a89f-60d2a5ef1014}*SharedItemsImports = 4
-		Shared Projects\CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems*{35f756d4-917b-4cc5-9941-9784e6c95f0c}*SharedItemsImports = 4
-		Shared Projects\CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems*{b1aea547-18fe-477c-a30e-6459f5d6e070}*SharedItemsImports = 13
+		CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems*{35f756d4-917b-4cc5-9941-9784e6c95f0c}*SharedItemsImports = 4
+		CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems*{b1aea547-18fe-477c-a30e-6459f5d6e070}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{26C42742-2AB4-4439-A89F-60D2A5EF1014}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26C42742-2AB4-4439-A89F-60D2A5EF1014}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26C42742-2AB4-4439-A89F-60D2A5EF1014}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26C42742-2AB4-4439-A89F-60D2A5EF1014}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35F756D4-917B-4CC5-9941-9784E6C95F0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35F756D4-917B-4CC5-9941-9784E6C95F0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35F756D4-917B-4CC5-9941-9784E6C95F0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35F756D4-917B-4CC5-9941-9784E6C95F0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94D0D4F3-F0E7-4D0F-A1CC-3D8A2DB88E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94D0D4F3-F0E7-4D0F-A1CC-3D8A2DB88E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94D0D4F3-F0E7-4D0F-A1CC-3D8A2DB88E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94D0D4F3-F0E7-4D0F-A1CC-3D8A2DB88E62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
