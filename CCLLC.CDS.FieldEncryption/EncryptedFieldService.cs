@@ -76,13 +76,12 @@ namespace CCLLC.CDS.FieldEncryption
 
             var recordConfig = this.Configuration.RecordConfiguration(RecordType);
 
-            foreach (var field in target.Attributes)
+            foreach (var fieldConfig in recordConfig.ConfiguredFields)
             {
-                var key = field.Key;
+                var key = fieldConfig.FieldName;
 
-                if (target[key] is string && recordConfig.ConfiguredFields.Where(f => f.FieldName == key).Any())
+                if (target.Contains(key) && target[key] is string && target[key] != null)
                 {
-                    var fieldConfig = recordConfig.ConfiguredFields.Where(f => f.FieldName == key).FirstOrDefault();
                     var fieldValue = target.GetValue<string>(key);
                     fieldValue = CreatePreparedFieldValue(fieldConfig, fieldValue);
 
@@ -98,7 +97,6 @@ namespace CCLLC.CDS.FieldEncryption
                 }               
             }
         }
-
 
         public void GenerateEncryptedFieldQuery(ref QueryExpression queryExpression)
         {
@@ -162,7 +160,6 @@ namespace CCLLC.CDS.FieldEncryption
             }
         }
 
-
         public void PrepareForDecryption(ref ColumnSet columnSet)
         {
             ThrowErrorIfNotPreOp("Decryption prep must be in the PreOp pipeline stage.");
@@ -198,7 +195,6 @@ namespace CCLLC.CDS.FieldEncryption
             PutFieldsToProcessInSharedVariables(fieldsToProcess);
         }
 
-
         public void DecryptFields(ref Entity target)
         {
             ThrowErrorIfNotPostOp("Decryption operations must be called in the PostOp pipeline stage.");
@@ -211,7 +207,6 @@ namespace CCLLC.CDS.FieldEncryption
 
             DecryptEntityFields(target, fieldsToProcess);
         }
-
 
         public void DecryptFields(ref EntityCollection targetCollection)
         {
@@ -228,7 +223,6 @@ namespace CCLLC.CDS.FieldEncryption
                 DecryptEntityFields(target, fieldsToProcess);
             }
         }
-
 
 
         /// <summary>

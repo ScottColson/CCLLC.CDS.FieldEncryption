@@ -30,5 +30,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IRecordConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IUserRoleEvaluator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RecordConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserSecurityRoleEvaluator.cs" />
   </ItemGroup>
 </Project>

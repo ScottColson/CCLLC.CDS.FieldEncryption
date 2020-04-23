@@ -51,8 +51,8 @@ namespace CCLLC.CDS.FieldEncryption
                         new ConditionExpression
                         {
                             AttributeName = "name",
-                            Operator = ConditionOperator.Like,
-                            Values = { settings.ConfigurationDataPath }
+                            Operator = ConditionOperator.BeginsWith,
+                            Values = { settings.ConfigurationDataPath}
                         }
                     }
                 }

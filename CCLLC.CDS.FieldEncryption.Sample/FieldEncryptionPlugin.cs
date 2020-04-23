@@ -3,6 +3,8 @@ using Microsoft.Xrm.Sdk.Query;
 
 namespace CCLLC.CDS.FieldEncryption.Sample
 {
+    using CCLLC.Core;
+    using CCLLC.Core.Serialization;
     using CCLLC.CDS.Sdk;
     using CCLLC.Azure.Secrets;
 
@@ -14,6 +16,9 @@ namespace CCLLC.CDS.FieldEncryption.Sample
             Container.Implement<IEncryptedFieldServiceFactory>().Using<EncryptedFieldServiceFactoryNoLogging>().AsSingleInstance();
             Container.Implement<IEncryptionServiceFactory>().Using<AzureSecretEncryptionServiceFactory>().AsSingleInstance();
             Container.Implement<ISecretProviderFactory>().Using<AzureSecretProviderFactory>().AsSingleInstance();
+            Container.Implement<IJSONContractSerializer>().Using<DefaultJSONSerializer>().AsSingleInstance();
+            Container.Implement<IUserRoleEvaluator>().Using<UserSecurityRoleEvaluator>().AsSingleInstance();
+
 
             RegisterCreateHandler<Entity>(ePluginStage.PreOperation, EncryptOnCreateHandler);
             RegisterUpdateHandler<Entity>(ePluginStage.PreOperation, EncryptOnUpdateHandler);
