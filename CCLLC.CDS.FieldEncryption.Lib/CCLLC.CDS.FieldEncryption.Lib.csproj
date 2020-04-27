@@ -38,7 +38,7 @@
       <HintPath>..\packages\CCLLC.Core.ProcessModel.1.1.3\lib\net462\CCLLC.Core.ProcessModel.dll</HintPath>
     </Reference>
     <Reference Include="CCLLCCDSSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e4c258decc55898a, processorArchitecture=MSIL">
-      <HintPath>..\packages\CCLLC.CDS.Sdk.1.4.0\lib\net462\CCLLCCDSSdk.dll</HintPath>
+      <HintPath>..\packages\CCLLC.CDS.Sdk.1.4.1\lib\net462\CCLLCCDSSdk.dll</HintPath>
     </Reference>
     <Reference Include="CCLLCCDSSdkData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=123e29a4f4f84d01, processorArchitecture=MSIL">
       <HintPath>..\packages\CCLLC.CDS.Sdk.Data.1.1.0\lib\net462\CCLLCCDSSdkData.dll</HintPath>
