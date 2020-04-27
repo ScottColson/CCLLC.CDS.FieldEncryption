@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
 using DLaB.Xrm.Test;
 using DLaB.Xrm.Test.Builders;
 
@@ -58,12 +60,7 @@ namespace CCLLC.CDS.FieldEncryption.Test
                    .WithIdsDefaultedForCreate(
                     CreatedIds.Contact)
                    .Build();
-
-                var resource = service.Retrieve(WebResource.EntityLogicalName, ExistingIds.ConfigWebResource.EntityId, new Microsoft.Xrm.Sdk.Query.ColumnSet(true)).ToEntity<WebResource>();
-
-
-                Assert.AreEqual("ccllc_/configuration/encryptedfields/contacts.xml", resource.Name);
-
+               
                 var plugin = new Sample.FieldEncryptionPlugin(null, null);
 
                 plugin.Container.Implement<ISecretProviderFactory>().Using<Fakes.FakeSecretProviderFactory<Fakes.FakeSecretProvider>>().WithOverwrite();
@@ -136,10 +133,6 @@ namespace CCLLC.CDS.FieldEncryption.Test
                 service = new OrganizationServiceBuilder(service)
                    .Build();
 
-                var resource = service.Retrieve(WebResource.EntityLogicalName, ExistingIds.ConfigWebResource.EntityId, new Microsoft.Xrm.Sdk.Query.ColumnSet(true)).ToEntity<WebResource>();
-
-                Assert.AreEqual("ccllc_/configuration/encryptedfields/contacts.xml", resource.Name);
-
                 var plugin = new Sample.FieldEncryptionPlugin(null, null);
 
                 plugin.Container.Implement<ISecretProviderFactory>().Using<Fakes.FakeSecretProviderFactory<Fakes.FakeSecretProvider>>().WithOverwrite();
@@ -170,7 +163,94 @@ namespace CCLLC.CDS.FieldEncryption.Test
                 Assert.AreEqual(TestData.EncryptedValue, contextTarget.Department);
             }
         }
+
+        #endregion UpdateHandler_Should_EncryptDepartmentField
+
+
+
+
+
+        #region RetrieveHandler_Should_DecryptDepartmentField
+
+        [TestMethod]
+        public void Test_RetrieveHandler_Should_DecryptDepartmentField()
+        {
+            new RetrieveHandler_Should_DecryptDepartmentField().Test();
+        }
+
+        private class RetrieveHandler_Should_DecryptDepartmentField : TestMethodClassBase
+        {
+            private struct ExistingIds
+            {
+                public static readonly Id Contact = new Id<Contact>("{34E01509-DD7D-477C-9E90-D821B15A4B18}");
+                public static readonly Id ConfigWebResource = new Id<WebResource>("{268CF1F1-1438-4928-AD1A-9301D0EAD5D5}");
+            }
+
+            private struct TestData
+            {
+                public static readonly string contactConfig = "<configuration><entity recordType=\"contact\"><field fieldName=\"department\"/></entity></configuration>";
+                public static readonly string DecryptedValue = "TestValue";
+                public static readonly string EncryptedValue = "n0VGGyXQ5RH9omZWxFD7560EsIxIbTn4szad513eYOo=";
+            }
+
+
+            protected override void InitializeTestData(IOrganizationService service)
+            {
+                new CrmEnvironmentBuilder()
+                    .WithBuilder<WebResourceBuilder>(b => b
+                        .WithName("ccllc_/configuration/encryptedfields/contacts.xml")
+                        .WithType(WebResource_WebResourceType.Data_XML)
+                        .WithContent(TestData.contactConfig))
+                    .WithBuilder<ContactBuilder>(b => b
+                        .WithAttributeValue("department", TestData.EncryptedValue))
+                    .WithEntities<ExistingIds>().Create(service);
+            }
+
+            protected override void Test(IOrganizationService service)
+            {
+                service = new OrganizationServiceBuilder(service)
+                   .Build();
+
+                var plugin = new Sample.FieldEncryptionPlugin(null, null);
+
+                plugin.Container.Implement<ISecretProviderFactory>().Using<Fakes.FakeSecretProviderFactory<Fakes.FakeSecretProvider>>().WithOverwrite();
+
+
+                var target = new Contact()
+                {
+                    Id = ExistingIds.Contact.EntityId,
+                    Department = TestData.EncryptedValue
+                };
+
+                var maskingInstructions = new Dictionary<string, EncryptedFieldService.MaskingInstruction>();
+                maskingInstructions.Add("department", EncryptedFieldService.MaskingInstruction.Unmask);
+
+
+                var executionContext = new PluginExecutionContextBuilder()
+                        .WithRegisteredEvent(40, "Retrieve", Contact.EntityLogicalName)
+                        .WithInputParameter("Target", target.ToEntityReference())
+                        .WithInputParameter("ColumnSet", new ColumnSet("display"))
+                        .WithOutputParameter("Entity", target)
+                        .WithSharedVariable("CCLLC.EncryptedFieldService.DecryptColumns", maskingInstructions)
+                        .Build();
+
+                var serviceProvider = new ServiceProviderBuilder(
+                    service,
+                    executionContext,
+                    new DebugLogger()).Build();
+
+                plugin.Execute(serviceProvider);
+
+
+                var contextTarget = executionContext.OutputParameters["Entity"] as Contact;
+
+                Assert.AreEqual(TestData.DecryptedValue, contextTarget.Department);
+            }
+        }
+
+        #endregion RetrieveHandler_Should_DecryptDepartmentField
+
     }
 
-    #endregion UpdateHandler_Should_EncryptDepartmentField
+
 }

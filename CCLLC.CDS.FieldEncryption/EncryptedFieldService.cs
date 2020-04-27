@@ -13,7 +13,7 @@ namespace CCLLC.CDS.FieldEncryption
     {
         private const string DECRYPT_FIELDS_VARIABLE_NAME = "CCLLC.EncryptedFieldService.DecryptColumns";
 
-        private enum MaskingInstruction { Unmask, PartialMask, FullMask }
+        public enum MaskingInstruction { Unmask, PartialMask, FullMask }
 
         #region Constructor Properties
 
