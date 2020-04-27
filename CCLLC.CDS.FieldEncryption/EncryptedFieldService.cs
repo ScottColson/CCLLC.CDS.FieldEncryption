@@ -175,14 +175,17 @@ namespace CCLLC.CDS.FieldEncryption
             {
                 var unmaskTrigger = fieldConfig.UnmaskTriggerAttributeName ?? Configuration.GlobalUnmaskTriggerAttributeName;
 
-                if (!string.IsNullOrEmpty(fieldConfig.UnmaskTriggerAttributeName)
-                    && (unmaskTrigger == "*" || columnSet.AllColumns || columnSet.Columns.Contains(unmaskTrigger)))
+                var fieldExists = columnSet.AllColumns || columnSet.Columns.Contains(fieldConfig.FieldName);
+                var fieldDecryptRequested = !string.IsNullOrEmpty(fieldConfig.UnmaskTriggerAttributeName)
+                    && (unmaskTrigger == "*" || columnSet.AllColumns || columnSet.Columns.Contains(unmaskTrigger));
+
+                if (fieldExists && fieldDecryptRequested )
                 {
                     var maskingInstruction = GetMaskingInstruction(fieldConfig);
 
                     fieldsToProcess.Add(fieldConfig.FieldName, maskingInstruction);
 
-                    if (unmaskTrigger != "*" && !columnSet.AllColumns && fieldsToRemove.Contains(unmaskTrigger))
+                    if (unmaskTrigger != "*" && !columnSet.AllColumns && !fieldsToRemove.Contains(unmaskTrigger))
                     {
                         fieldsToRemove.Add(unmaskTrigger);
                     }
