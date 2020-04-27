@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
@@ -65,7 +64,6 @@ namespace CCLLC.CDS.FieldEncryption
             this.RoleEvaluator = roleEvaluator ?? throw new ArgumentNullException("roleEvaluator");
             this.AccessLoggerFactory = accessLoggerFactory;
         }
-
       
 
         public void EncryptFields(ref Entity target)
@@ -80,7 +78,9 @@ namespace CCLLC.CDS.FieldEncryption
             {
                 var key = fieldConfig.FieldName;
 
-                if (target.Contains(key) && target[key] is string && target[key] != null)
+                bool targetContainsConfiguredField = target.Contains(key) && target[key] is string && target[key] != null;
+                
+                if (targetContainsConfiguredField)
                 {
                     var fieldValue = target.GetValue<string>(key);
                     fieldValue = CreatePreparedFieldValue(fieldConfig, fieldValue);
@@ -263,6 +263,13 @@ namespace CCLLC.CDS.FieldEncryption
                 accessType);
         }
 
+
+        /// <summary>
+        /// Remove any trigger attributes identified in the fieldsToRemove list from the specified
+        /// column set.
+        /// </summary>
+        /// <param name="columnSet"></param>
+        /// <param name="fieldsToRemove"></param>
         private void RemoveTriggerAttributes(ref ColumnSet columnSet, IList<string> fieldsToRemove)
         {
             if (columnSet.AllColumns) return;
@@ -278,6 +285,7 @@ namespace CCLLC.CDS.FieldEncryption
             
         }
 
+
         /// <summary>
         /// Adds the field processing instructions to the plugin shared variables collection for use by the Decrypt 
         /// methods on a plugin post op call.
@@ -291,6 +299,7 @@ namespace CCLLC.CDS.FieldEncryption
             }
         }
 
+
         /// <summary>
         /// Retrieves field processing instructions from the plugin shared variables collection if available.
         /// </summary>
@@ -300,6 +309,7 @@ namespace CCLLC.CDS.FieldEncryption
             return (ExecutionContext.SharedVariables.ContainsKey(DECRYPT_FIELDS_VARIABLE_NAME))
                 ? (Dictionary<string, MaskingInstruction>)ExecutionContext.SharedVariables[DECRYPT_FIELDS_VARIABLE_NAME] : null;
         }
+
 
         /// <summary>
         /// Uses provided field processing instructions to modify entity fields by decrypting and masking the
@@ -360,7 +370,8 @@ namespace CCLLC.CDS.FieldEncryption
             Regex re = new Regex(pattern);
             return re.Replace(value, format);
         }
-
+        
+        
         /// <summary>
         /// Evaluate value against match pattern in the supplied field configuration and return
         /// true if they match.
@@ -373,10 +384,13 @@ namespace CCLLC.CDS.FieldEncryption
             return !string.IsNullOrEmpty(fieldConfig.MatchPattern)
                 && (fieldConfig.MatchPattern == "*" || Regex.IsMatch(value, fieldConfig.MatchPattern, RegexOptions.IgnoreCase));
         }
-
-
-       
-
+              
+        /// <summary>
+        /// Returns a new filter expression that becomes the base of the modified encrypted search criteria if the 
+        /// passed in search filter is null. Otherwise simply returns the passed in filter expression without modification.
+        /// </summary>
+        /// <param name="encryptedSearchFilter"></param>
+        /// <returns></returns>
         private FilterExpression GenerateEncryptedSearchFilterIfNull(FilterExpression encryptedSearchFilter)
         {
 
@@ -468,6 +482,13 @@ namespace CCLLC.CDS.FieldEncryption
             return Regex.Replace(searchValue, prepPattern, "");
         }
 
+
+        /// <summary>
+        /// Returns the required <see cref="MaskingInstruction"/> based on the passed in <see cref="IFieldConfiguration"/>
+        /// value and the users assigned roles vs the roles needed to unmask or partially unmask an encrypted value.
+        /// </summary>
+        /// <param name="fieldConfig"></param>
+        /// <returns></returns>
         private MaskingInstruction GetMaskingInstruction(IFieldConfiguration fieldConfig)
         {
             if (RoleEvaluator.IsAssignedRole(ExecutionContext, ExecutionContext.InitiatingUserId, fieldConfig.UnmaskedViewRoles))
