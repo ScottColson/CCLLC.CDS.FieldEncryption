@@ -20,6 +20,14 @@ namespace CCLLC.CDS.FieldEncryption
         void GenerateEncryptedFieldQuery(ref QueryExpression queryExpression);
 
         /// <summary>
+        /// Logs a search hit for each item contained in the targetCollection if logging is enabled and the query is the result of
+        /// an encrypted search request.
+        /// </summary>
+        /// <param name="targetCollection"></param>
+        void LogEncryptedSearchHits(EntityCollection targetCollection);
+        
+
+        /// <summary>
         /// Modifies configured field values on the input entity by removing any specified formatting characters and 
         /// then encrypting the field data prior to saving it to the CDS data store. Must be executed in the plugin
         /// PreOp pipeline stage.

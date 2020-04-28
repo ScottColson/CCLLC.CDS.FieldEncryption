@@ -11,6 +11,7 @@ namespace CCLLC.CDS.FieldEncryption
     public class EncryptedFieldService : IEncryptedFieldService
     {
         private const string DECRYPT_FIELDS_VARIABLE_NAME = "CCLLC.EncryptedFieldService.DecryptColumns";
+        private const string LOG_SEARCH_RESULTS_VARIABLE_NAME = "CCLLC.EncryptedFieldService.LogSearchResults";
 
         public enum MaskingInstruction { Unmask, PartialMask, FullMask }
 
@@ -157,8 +158,23 @@ namespace CCLLC.CDS.FieldEncryption
             if (encryptedSearchFilter != null)
             {
                 queryExpression.Criteria = encryptedSearchFilter;
+                SetSearchLoggingVariable();
             }
         }
+
+        public void LogEncryptedSearchHits(EntityCollection targetCollection)
+        {
+            if (ExecutionContext.SharedVariables.Contains(LOG_SEARCH_RESULTS_VARIABLE_NAME))
+            {
+                foreach(var target in targetCollection.Entities)
+                {
+                    LogAccess(target.Id, null, AccessType.SearchHit);
+                }
+            }
+            
+        }
+
+
 
         public void PrepareForDecryption(ref ColumnSet columnSet)
         {
@@ -173,7 +189,7 @@ namespace CCLLC.CDS.FieldEncryption
 
             foreach (var fieldConfig in recordConfig.ConfiguredFields)
             {
-                var unmaskTrigger = fieldConfig.UnmaskTriggerAttributeName ?? Configuration.GlobalUnmaskTriggerAttributeName;
+                var unmaskTrigger = fieldConfig.UnmaskTriggerAttributeName ?? recordConfig.UnmaskTriggerAttributeName ??  Configuration.GlobalUnmaskTriggerAttributeName;
 
                 var fieldExists = columnSet.AllColumns || columnSet.Columns.Contains(fieldConfig.FieldName);
                 var fieldDecryptRequested = !string.IsNullOrEmpty(fieldConfig.UnmaskTriggerAttributeName)
@@ -299,6 +315,10 @@ namespace CCLLC.CDS.FieldEncryption
             }
         }
 
+        private void SetSearchLoggingVariable()
+        {
+            ExecutionContext.SharedVariables.Add(LOG_SEARCH_RESULTS_VARIABLE_NAME, true);
+        }
 
         /// <summary>
         /// Retrieves field processing instructions from the plugin shared variables collection if available.

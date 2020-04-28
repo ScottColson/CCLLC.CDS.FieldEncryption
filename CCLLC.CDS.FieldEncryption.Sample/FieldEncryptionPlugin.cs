@@ -12,12 +12,13 @@ namespace CCLLC.CDS.FieldEncryption.Sample
         public FieldEncryptionPlugin(string unsecureConfig, string secureConfig) : base(unsecureConfig, secureConfig)
         {
             // Add required services to the service container.
-            Container.Implement<IEncryptedFieldSettingsFactory>().Using<EncryptedFieldSettingsFactory>().AsSingleInstance();
             Container.Implement<IEncryptedFieldServiceFactory>().Using<EncryptedFieldServiceFactoryNoLogging>().AsSingleInstance();
+            Container.Implement<IEncryptedFieldSettingsFactory>().Using<EncryptedFieldSettingsFactory>().AsSingleInstance();
+            Container.Implement<IUserRoleEvaluator>().Using<UserSecurityRoleEvaluator>().AsSingleInstance();
             Container.Implement<IEncryptionServiceFactory>().Using<AzureSecretEncryptionServiceFactory>().AsSingleInstance();
             Container.Implement<ISecretProviderFactory>().Using<AzureSecretProviderFactory>().AsSingleInstance();
             Container.Implement<IJSONContractSerializer>().Using<DefaultJSONSerializer>().AsSingleInstance();
-            Container.Implement<IUserRoleEvaluator>().Using<UserSecurityRoleEvaluator>().AsSingleInstance();
+        
 
             // Register handlers to manage encryption of configured fields on create and update. Note that
             // these early bound handler registrations will respond to any entity type since they are using Entity
@@ -29,9 +30,11 @@ namespace CCLLC.CDS.FieldEncryption.Sample
             RegisterRetrieveHandler<Entity>(ePluginStage.PreOperation, PrepareForRetrieveDecryption);
             RegisterRetrieveHandler<Entity>(ePluginStage.PostOperation, PostRetrieveDecryption);
 
-            // Register PreOp and PostOp event handlers to handler encrypted search requests and decrypt
-            // field data for RetrieveMultiple requests.
+            // Register PreOp and PostOp event handlers to handle encrypted search requests and search hit logging 
             RegisterQueryHandler<Entity>(ePluginStage.PreOperation, EncryptedSearchHandler);
+            RegisterQueryHandler<Entity>(ePluginStage.PostOperation, LogEncryptedSearchHits);
+
+            // Register PreOp and PostOp event handlers to decrypt field data for RetrieveMultiple requests.
             RegisterQueryHandler<Entity>(ePluginStage.PreOperation, PrepareForQueryDecryption);
             RegisterQueryHandler<Entity>(ePluginStage.PostOperation, PostQueryDecryption);
         }
@@ -67,6 +70,18 @@ namespace CCLLC.CDS.FieldEncryption.Sample
                 encryptionService.GenerateEncryptedFieldQuery(ref query);
             }
         }
+
+
+        private void LogEncryptedSearchHits(ICDSPluginExecutionContext executionContext, QueryExpression query, EntityCollection retrievedRecords)
+        {
+            var factory = Container.Resolve<IEncryptedFieldServiceFactory>();
+
+            using (var encryptionService = factory.Create(executionContext, query.EntityName))
+            {
+                encryptionService.LogEncryptedSearchHits(retrievedRecords);
+            }
+        }
+
 
 
         private void PrepareForRetrieveDecryption(ICDSPluginExecutionContext executionContext, EntityReference target, ColumnSet columnSet, Entity retrievedRecord)
