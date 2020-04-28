@@ -26,7 +26,7 @@ the ccllc_driverlicensenumber field of the contact entity.
 
 ```
 This is a simplified example that relies on default values and does not implement role based
-access. See the [full documentation on configuration](\Configuration.md) for additional options and deployment
+access. See the [full documentation on configuration](Configuration.md) for additional options and deployment
 considerations.
 
 See the [sample plugin code] to see how to implement the Field Encryption Service in a plugin.
