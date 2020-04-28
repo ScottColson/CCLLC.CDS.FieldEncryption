@@ -3,7 +3,6 @@ using Microsoft.Xrm.Sdk.Query;
 
 namespace CCLLC.CDS.FieldEncryption.Sample
 {
-    using CCLLC.Core;
     using CCLLC.Core.Serialization;
     using CCLLC.CDS.Sdk;
     using CCLLC.Azure.Secrets;
@@ -12,6 +11,7 @@ namespace CCLLC.CDS.FieldEncryption.Sample
     {
         public FieldEncryptionPlugin(string unsecureConfig, string secureConfig) : base(unsecureConfig, secureConfig)
         {
+            // Add required services to the service container.
             Container.Implement<IEncryptedFieldSettingsFactory>().Using<EncryptedFieldSettingsFactory>().AsSingleInstance();
             Container.Implement<IEncryptedFieldServiceFactory>().Using<EncryptedFieldServiceFactoryNoLogging>().AsSingleInstance();
             Container.Implement<IEncryptionServiceFactory>().Using<AzureSecretEncryptionServiceFactory>().AsSingleInstance();
@@ -19,13 +19,18 @@ namespace CCLLC.CDS.FieldEncryption.Sample
             Container.Implement<IJSONContractSerializer>().Using<DefaultJSONSerializer>().AsSingleInstance();
             Container.Implement<IUserRoleEvaluator>().Using<UserSecurityRoleEvaluator>().AsSingleInstance();
 
-
+            // Register handlers to manage encryption of configured fields on create and update. Note that
+            // these early bound handler registrations will respond to any entity type since they are using Entity
+            // rather than an early bound proxy.
             RegisterCreateHandler<Entity>(ePluginStage.PreOperation, EncryptOnCreateHandler);
             RegisterUpdateHandler<Entity>(ePluginStage.PreOperation, EncryptOnUpdateHandler);
 
+            // Register PreOp and PostOp event handlers to decrypt field data for a Retrieve request.
             RegisterRetrieveHandler<Entity>(ePluginStage.PreOperation, PrepareForRetrieveDecryption);
             RegisterRetrieveHandler<Entity>(ePluginStage.PostOperation, PostRetrieveDecryption);
 
+            // Register PreOp and PostOp event handlers to handler encrypted search requests and decrypt
+            // field data for RetrieveMultiple requests.
             RegisterQueryHandler<Entity>(ePluginStage.PreOperation, EncryptedSearchHandler);
             RegisterQueryHandler<Entity>(ePluginStage.PreOperation, PrepareForQueryDecryption);
             RegisterQueryHandler<Entity>(ePluginStage.PostOperation, PostQueryDecryption);
