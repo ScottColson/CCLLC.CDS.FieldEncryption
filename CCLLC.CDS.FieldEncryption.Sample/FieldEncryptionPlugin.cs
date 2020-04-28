@@ -28,7 +28,7 @@ namespace CCLLC.CDS.FieldEncryption.Sample
 
             RegisterQueryHandler<Entity>(ePluginStage.PreOperation, EncryptedSearchHandler);
             RegisterQueryHandler<Entity>(ePluginStage.PreOperation, PrepareForQueryDecryption);
-            RegisterQueryHandler<Entity>(ePluginStage.PreOperation, PostQueryDecryption);
+            RegisterQueryHandler<Entity>(ePluginStage.PostOperation, PostQueryDecryption);
         }
 
 
