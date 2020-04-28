@@ -13,15 +13,15 @@ root can have zero or more _setting_ and _entity_ elements.
 
 ###### Setting Elements
 
-Setting implement simple name/value pair inputs such as 
+Setting elements are parented by the _configuration_ element and implement simple name/value pairs 
 ```xml
 <setting name="settingName" value="settingValue"/>
 ```
-that are used to override configuration defaults for the following global settings:
+used to override configuration defaults for the following global settings:
 
 1. Default Unmask Trigger Attribute (_unmaskTriggerAttribute_) - the attribute name used to tell the system that the operation 
-wants a field to be decrypted. This default value is used if a specific unmask attribute is
-not defined as part of the field definition. If not provided, the system uses "ccllc_decrypthis" 
+wants a field to be decrypted. This global default value is used if a specific unmask attribute is
+not defined as part of the entity or field definitions. If not provided, the system uses "ccllc_decrypthis" 
 as the default trigger attribute name._
 
 2. Default Field Prep Pattern (_fieldPrepPattern_) - a RegEx pattern used to remove any unwanted
@@ -39,7 +39,41 @@ setting value.
 
 ###### Entity Elements
 
-TBD
+Entity elements are parented by the _configuration_ element and are used to group encrypted field configuration 
+information for a given entity
+```xml
+<entity recordName="contact"></entity>
+```
+where the schema name of the target entity is defined using the _recordName_ attribute. The _entity_ 
+element also supports an optional _unmaskTriggerAttribute_ attribute that is used to define a 
+default unmask attribute for the entity that is different than the global default value.
 
+###### Field Elements
+
+Field elements are parented by an _entity_ element and define which fields in a given entity that the
+CDS Field Encryption Service manages. The _field_ element requires a _fieldName_ attribute with
+
+```xml
+<field fieldName="ccllc_driverlicensenumber"
+       unmaskTriggerAttribute="ccllc_somefield"
+       disableFieldPrep="false"
+       fieldPrepPattern="[^a-zA-Z0-9]"
+       matchPattern="*"
+       invalidMatchMessage="Invalid DLN Number"
+       fullyMaskedFormat="*********"
+       partiallyMaskedViewRoles="*"
+       partiallyMaskedPattern="(\S{6})(\S{3})"
+       partiallyMaskedFormat="*******-$2"
+       unaskedViewRoles="DLN_Operator,DLN_Supervisor"
+       unaskedPattern="(\S{2})(\S{4})(\S{3})"
+       unaskedFormat="$1-$2-$3"
+       searchRoles="*"
+       inactiveRecordSearch="false" />
+``` 
+
+the schema name of the field that is being managed by the CDS Field Encryption Service. The following additional
+attributes can be set in the _field_ element to refine how the service operates against that field:
+
+TBD
 
 
