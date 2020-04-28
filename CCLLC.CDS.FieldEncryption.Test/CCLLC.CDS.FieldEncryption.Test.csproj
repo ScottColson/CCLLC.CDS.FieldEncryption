@@ -203,6 +203,7 @@
     <Compile Include="TestInitializer.cs" />
     <Compile Include="TestMethodClassBase.cs" />
     <Compile Include="FieldEncryptionServiceTests.cs" />
+    <Compile Include="SearchQueryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
