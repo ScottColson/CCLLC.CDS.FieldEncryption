@@ -3,6 +3,20 @@ using Microsoft.Xrm.Sdk.Query;
 
 namespace CCLLC.CDS.FieldEncryption.Sample
 {
+
+    /**************************************************************************
+     * 
+     * CCLLC Package References
+     * 
+     * This sample plugin is using a project reference to CCLLC.CDS.FieldEncryption.Lib
+     * and the CCLLC.CDS.Sdk and CCLLC.Azure.Secrets Nuget packages and their associated 
+     * dependencies. You would need merge these into your plugin assembly prior to deployment.
+     * 
+     * In an actual production situation consider using the CCLLC.CDS.FieldEncryption.Sources 
+     * package to load all required references as source code to the project.
+     * 
+     *******************************/
+
     using CCLLC.Core.Serialization;
     using CCLLC.CDS.Sdk;
     using CCLLC.Azure.Secrets;

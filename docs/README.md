@@ -1,8 +1,8 @@
 # CCLLC.CDS.FieldEncryption
 
 Provides a set if services that can be used within a CDS Plugin to implement field level encryption 
-and decryption of CDS entity data. See the [sample plugin code](CCLLC.CDS.FieldEncryption.Sample/FieldEncryptionPlugin.cs
-) to see an example plugin implementation.
+and decryption of CDS entity data. See the [sample plugin code](https://github.com/ScottColson/CCLLC.CDS.FieldEncryption/blob/master/CCLLC.CDS.FieldEncryption.Sample/FieldEncryptionPlugin.cs)
+for an example plugin implementation.
 
 ##### Features
 
