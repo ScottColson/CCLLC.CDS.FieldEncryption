@@ -1,3 +1,5 @@
+[![Build Status](https://colsoncode.visualstudio.com/GitHub%20Pipelines/_apis/build/status/CCLLC.CDS.FieldEncryption?branchName=master)](https://colsoncode.visualstudio.com/GitHub%20Pipelines/_build/latest?definitionId=4&branchName=master)
+
 # CCLLC.CDS.FieldEncryption
 
 Provides a set if services that can be used within a CDS Plugin to implement field level encryption 
