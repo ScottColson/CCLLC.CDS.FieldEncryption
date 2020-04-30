@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata minClientVersion="3.3.0">
+    <id>CCLLC.CDS.FieldEncyption.Sources</id>
+    <version>$version$</version>
+    <description>Provides services for implementing CDS field encryption plugin</description>
+    <authors>Colson Code, LLC</authors>
+    <owners>Colson Code, LLC</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/ScottColson/CCLLC.CDS.FieldEncryption</projectUrl>
+    <tags></tags>
+    <dependencies>      
+      <dependency id="CCLLC.CDS.Sdk.Sources" version="1.4.1" />
+      <dependency id="CCLLC.Azure.Secrets.Sources" version="1.0.0" />
+    </dependencies>
+  </metadata>
+  <files>   
+    <file src="CCLLC.CDS.FieldEncryption\**\*.cs" target="content/App_Packages/CCLLC.CDS.FieldEncryption.$version$/" />
+  </files>
+</package>

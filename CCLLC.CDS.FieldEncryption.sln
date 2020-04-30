@@ -14,7 +14,6 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems*{35f756d4-917b-4cc5-9941-9784e6c95f0c}*SharedItemsImports = 4
-		CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems*{94d0d4f3-f0e7-4d0f-a1cc-3d8a2db88e62}*SharedItemsImports = 4
 		CCLLC.CDS.FieldEncryption\CCLLC.CDS.FieldEncryption.projitems*{b1aea547-18fe-477c-a30e-6459f5d6e070}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
