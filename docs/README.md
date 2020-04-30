@@ -84,11 +84,13 @@ the CDS Environment Variable key name *CCLLC.EncryptedFields.CacheTimeout*.
 
 ###### Dependencies
 
-- [CCLLC.CDS.Sdk]
-- [CCLLC.Azure.Secrets]
+- [CCLLC.CDS.Sdk](https://scottcolson.github.io/CCLLCCodeLibraries/CCLLC.CDS.Sdk.html)
+- [CCLLC.Azure.Secrets](https://scottcolson.github.io/CCLLC.Azure.Secrets/)
 
 ###### Nuget Packages
 
-- TBD
+- [Assembly - CCLLC.CDS.FieldEncryption](https://www.nuget.org/packages/CCLLC.CDS.FieldEncryption/)
+- [Source Code - CCLLC.CDS.FieldEncryption.Sources](https://www.nuget.org/packages/CCLLC.CDS.FieldEncryption.Sources/)
+
 
 
