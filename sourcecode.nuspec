@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <package>
   <metadata minClientVersion="3.3.0">
-    <id>CCLLC.CDS.FieldEncyption.Sources</id>
+    <id>CCLLC.CDS.FieldEncryption.Sources</id>
     <version>$version$</version>
     <description>Provides services for implementing CDS field encryption plugin</description>
     <authors>Colson Code, LLC</authors>
