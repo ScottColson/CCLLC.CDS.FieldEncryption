@@ -74,6 +74,18 @@ CDS Field Encryption Service manages. The _field_ element requires a _fieldName_
 the schema name of the field that is being managed by the CDS Field Encryption Service. The following additional
 attributes can be set in the _field_ element to refine how the service operates against that field:
 
-TBD
-
+- _unmaskTriggerAttribute_ can be used to set a specific unmasking trigger field for the field that is being encrypted. When omitted, the trigger for the _entity_ element or the global trigger are used.
+- _disableFieldPrep_ can be set to **true** if data in this field should not be processed for removal of formatting characters.
+- _fieldPrepPattern_ can be set to override the global default prep pattern for this field.
+- _matchPattern_ can be set to require the clear text field value to match a specific RegEx pattern prior to Encryption. This check is completed after any prep that removes formatting characters. This value also eliminates a field from encrypted search if the clear text search value does not match the RegEx pattern.
+- _invalidMatchMessage_ can be used to create a specific error message when the clear text value does not match.
+- _fullyMaskedFormat_ can be used to set the returned when a user does not have permission to see the decrypted value or when decryption was not explicitly requested. If omitted, the default of ********* is displayed.
+- _partiallyMaskedViewRoles_ can be set to a comma delimited list of security roles that are allowed to view the decrypted field data in a partially masked format. Defaults to a wildcard * character if omitted.
+- _partiallyMaskedPattern_ is used to define a RegEx pattern that parses the clear text value into groups for output formatting based on the pattern defined for _partiallyMaskedFormat_. If left blank no formatting will be applied the output will be decrypted clear text.
+- _partiallyMaskedFormat_ is used to define the format of the partially masked output text. If left blank no formatting will be applied the output will be decrypted clear text. 
+- _unmaskedViewRoles_ can be set to a comma delimited list of security roles that are allowed to view the decrypted field data as clear text. Defaults to a wildcard * character if omitted.
+- _unaskedPattern_ is used to define a RegEx pattern that parses the clear text value into groups for output formatting based on the pattern defined for _unmaskedFormat_. If left blank no formatting will be applied the output will be decrypted clear text.
+- _unmaskedFormat_ is used to define the formating for the clear text output. If left blank no formatting will be applied the output will be decrypted clear text without formatting. 
+- _searchRoles_ can be used to limit users that can search against the encrypted field to only those specified in the comma delimited list of security roles.
+- _inactiveRecordSearch_ can be set to true to include inactive records in the result of an encrypted field search against this field. Note that this is a field level option so some fields can include inactive records and others cannot.
 

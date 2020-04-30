@@ -18,10 +18,33 @@ for an example plugin implementation.
 ##### Key Concepts
 
 1. Encryption is limited to fields that represent string data. Encrypted strings are larger than their corresponding clear text so field sizes should be increased.
-2. Configuration information is required for each field that the system will manage. All configuration data is stored as XML in one or more CDS XML data resource records.
-2. Explicit decryption is dependent on a trigger attribute that added to the column set of a Retrieve or RetrieveMultiple request. This trigger attribute should not be an attribute used for any actual data storage.
-3. Decryption only occurs if the user is authorized to view the data as clear text or a partially masked result or as clear text.
-5. Users can search for records with an encrypted value by preceding their search text with a # character. This character is configurable.
+2. The key used to encrypt and decrypt field level data is stored as an Azure Key Vault Secret which is retrieved and cached for improved performance.
+3. Configuration information is required for each field that the system will manage. All configuration data is stored as XML in one or more CDS XML data resource records.
+4. Explicit decryption is dependent on a trigger attribute that added to the column set of a Retrieve or RetrieveMultiple request. This trigger attribute should not be an attribute used for any actual data storage.
+5. Decryption only occurs if the user is authorized to view the data as clear text or a partially masked result or as clear text.
+6. Users can search for records with an encrypted value by preceding their search text with a # character. This character is configurable.
+
+###### Azure Key Vault
+
+The Field Encryption Service uses an Azure Key Vault to store the encryption key so that
+control of the key can be segregated from administration of the CDS application that uses
+field encryption. 
+
+To connect to the Azure Key Vault, the service requires the following information:
+- Azure Tenant Id
+- Client/Application Id
+- Client/Application Secret.
+- The Azure Key Vault Name.
+
+The Application Id and secret are created through Azure AD App registrations. Note that 
+this registered app must granted the right to List and Get secrets in the vault.
+
+This access data is stored in the following CDS Environment Variables:
+
+- CCLLC.Azure.Secrets.TenantId
+- CCLLC.Azure.Secrets.ClientId
+- CCLLC.Azure.Secrets.ClientSecret
+- CCLLC.Azure.Secrets.VaultName
 
 ###### Role Based Access
 
@@ -30,8 +53,9 @@ fields.
 
 However, security role assignments can be used to restrict user access for viewing and
 for searching at the field level. The ability to view data can be set to either view
-the clear text data or with some additional configuration, some users can be restricted
-to seeing only a partially masked version of the clear text data. 
+the clear text data or with some additional configuration, users can be restricted
+to seeing a partially masked version of the clear text data. If a user is granted access
+to both clear text and partially masked data, then clear text data will be displayed.
 
 Additionally, the required security roles to search against an encrypted field can be
 set at a field level.
@@ -117,8 +141,6 @@ value in the CDS Environment Variables with a key name of *CCLLC.EncryptedFields
 By default the configuration data loaded by the service will be cached for a given plugin for 15 minutes. This
 cache time can be modified by setting a numeric value representing the number of seconds to cache in 
 the CDS Environment Variable key name *CCLLC.EncryptedFields.CacheTimeout*. 
-
-
 
 ###### Dependencies
 
