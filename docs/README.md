@@ -46,6 +46,10 @@ This access data is stored in the following CDS Environment Variables:
 - CCLLC.Azure.Secrets.ClientSecret
 - CCLLC.Azure.Secrets.VaultName
 
+The Field Encryption Service expects to find a secret with the name of CDSFieldEncryptionKey
+in the Azure Key Vault. If, for some reason this name doesn't work for your situation you can 
+set an alternate secret name in the CDS Environment Variables using key CCLLC.EncryptedFields.KeyName.
+
 ##### Role Based Access
 
 By default, all users are allowed to view decrypted data and to search against encrypted
