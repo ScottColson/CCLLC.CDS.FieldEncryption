@@ -4,7 +4,7 @@ Provides a set if services that can be used within a CDS Plugin to implement fie
 and decryption of CDS entity data. See the [sample plugin code](https://github.com/ScottColson/CCLLC.CDS.FieldEncryption/blob/master/CCLLC.CDS.FieldEncryption.Sample/FieldEncryptionPlugin.cs)
 for an example plugin implementation.
 
-##### Features
+#### Features
 
 1. Uses AES256 (aka Rijndael encryption) to encrypt and decrypt data using an encryption key stored as an Azure Key Vault Secret.
 2. Configurable to support multiple entities and multiple fields within each entity.
@@ -15,7 +15,7 @@ for an example plugin implementation.
 7. Supports implicit or explicit field decryption as part of a Retrieve or RetrieveMultiple operation.
 8. Optional logging of decrypted data access by system users.
 
-##### Key Concepts
+#### Key Concepts
 
 1. Encryption is limited to fields that represent string data. Encrypted strings are larger than their corresponding clear text so field sizes should be increased.
 2. The key used to encrypt and decrypt field level data is stored as an Azure Key Vault Secret which is retrieved and cached for improved performance.
@@ -24,7 +24,7 @@ for an example plugin implementation.
 5. Decryption only occurs if the user is authorized to view the data as clear text or a partially masked result or as clear text.
 6. Users can search for records with an encrypted value by preceding their search text with a # character. This character is configurable.
 
-###### Azure Key Vault
+##### Azure Key Vault
 
 The Field Encryption Service uses an Azure Key Vault to store the encryption key so that
 control of the key can be segregated from administration of the CDS application that uses
@@ -46,7 +46,7 @@ This access data is stored in the following CDS Environment Variables:
 - CCLLC.Azure.Secrets.ClientSecret
 - CCLLC.Azure.Secrets.VaultName
 
-###### Role Based Access
+##### Role Based Access
 
 By default, all users are allowed to view decrypted data and to search against encrypted
 fields. 
@@ -63,7 +63,7 @@ set at a field level.
 See [full documentation on configuration](Configuration.md) for additional information
 on configuring role based access.
 
-###### Explicit Decryption
+##### Explicit Decryption
 
 The Encrypted Field Service defaults to requiring the user/developer to explicitly direct it to decrypt data
 as part of a Retrieve or RetrieveMultiple operation. Decryption is explicitly directed by including a field 
@@ -91,7 +91,7 @@ RetrieveMultiple operation as long as the users roles allow it. This mode theref
 performance and offers less protection for the encrypted data because it will be displayed as decrypted at
 all times.
 
-###### Encrypted Search
+##### Encrypted Search
 
 The ability to search for a record based on the value in an encrypted field is made possible
 by the use of an encryption algorithm that is predictive, i.e. given the same key and the same
@@ -111,7 +111,7 @@ _Equal_ to the encrypted search value.
 The mechanism that creates the new filter criteria will only search against fields where
 the user has the required search role. 
 
-###### Configuration    
+##### Configuration    
 
 CDS field encryption is configured using XML data resources with configuration 
 information similar to the following example that directs the service to manage encryption for
@@ -142,12 +142,12 @@ By default the configuration data loaded by the service will be cached for a giv
 cache time can be modified by setting a numeric value representing the number of seconds to cache in 
 the CDS Environment Variable key name *CCLLC.EncryptedFields.CacheTimeout*. 
 
-###### Dependencies
+##### Dependencies
 
 - [CCLLC.CDS.Sdk](https://scottcolson.github.io/CCLLCCodeLibraries/CCLLC.CDS.Sdk.html)
 - [CCLLC.Azure.Secrets](https://scottcolson.github.io/CCLLC.Azure.Secrets/)
 
-###### Nuget Packages
+##### Nuget Packages
 
 - [Assembly - CCLLC.CDS.FieldEncryption](https://www.nuget.org/packages/CCLLC.CDS.FieldEncryption/)
 - [Source Code - CCLLC.CDS.FieldEncryption.Sources](https://www.nuget.org/packages/CCLLC.CDS.FieldEncryption.Sources/)

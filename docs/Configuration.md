@@ -11,7 +11,7 @@ a minimum per solution domain.
 Each XML data configuration must have a _configuration_ root element. Each _configuration_ 
 root can have zero or more _setting_ and _entity_ elements.
 
-###### Setting Elements
+##### Setting Elements
 
 Setting elements are parented by the _configuration_ element and implement simple name/value pairs 
 ```xml
@@ -37,7 +37,7 @@ If multiple setting elements with the same name are included as part of the set
 of XML data resources, then the last XML data resource processed will determine the
 setting value.
 
-###### Entity Elements
+##### Entity Elements
 
 Entity elements are parented by the _configuration_ element and are used to group encrypted field configuration 
 information for a given entity
@@ -48,7 +48,7 @@ where the schema name of the target entity is defined using the _recordName_ att
 element also supports an optional _unmaskTriggerAttribute_ attribute that is used to define a 
 default unmask attribute for the entity that is different than the global default value.
 
-###### Field Elements
+##### Field Elements
 
 Field elements are parented by an _entity_ element and define which fields in a given entity that the
 CDS Field Encryption Service manages. The _field_ element requires a _fieldName_ attribute with
