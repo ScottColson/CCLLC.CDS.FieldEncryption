@@ -6,7 +6,7 @@ for an example plugin implementation.
 
 ##### Features
 
-1. Uses the Rijndael algorithm to encrypt and decrypt data using an encryption key stored as an Azure Key Vault Secret.
+1. Uses AES256 (aka Rijndael encryption) to encrypt and decrypt data using an encryption key stored as an Azure Key Vault Secret.
 2. Configurable to support multiple entities and multiple fields within each entity.
 3. Supports user triggered record query and quick find against decrypted field data using a special search trigger character.
 4. Encrypts data in configured fields prior to writing the field data to the CDS data store.
@@ -16,6 +16,28 @@ for an example plugin implementation.
 8. Optional logging of decrypted data access by system users.
 
 ##### Key Concepts
+
+1. Encryption is limited to fields that represent string data. Encrypted strings are larger than their corresponding clear text so field sizes should be increased.
+2. Configuration information is required for each field that the system will manage. All configuration data is stored as XML in one or more CDS XML data resource records.
+2. Explicit decryption is dependent on a trigger attribute that added to the column set of a Retrieve or RetrieveMultiple request. This trigger attribute should not be an attribute used for any actual data storage.
+3. Decryption only occurs if the user is authorized to view the data as clear text or a partially masked result or as clear text.
+5. Users can search for records with an encrypted value by preceding their search text with a # character. This character is configurable.
+
+###### Role Based Access
+
+By default, all users are allowed to view decrypted data and to search against encrypted
+fields. 
+
+However, security role assignments can be used to restrict user access for viewing and
+for searching at the field level. The ability to view data can be set to either view
+the clear text data or with some additional configuration, some users can be restricted
+to seeing only a partially masked version of the clear text data. 
+
+Additionally, the required security roles to search against an encrypted field can be
+set at a field level.
+
+See [full documentation on configuration](Configuration.md) for additional information
+on configuring role based access.
 
 ###### Explicit Decryption
 
@@ -47,21 +69,37 @@ all times.
 
 ###### Encrypted Search
 
-TBD
+The ability to search for a record based on the value in an encrypted field is made possible
+by the use of an encryption algorithm that is predictive, i.e. given the same key and the same
+clear text, the algorithm will always generate the same encrypted value. 
+
+The Field Encryption Service uses this predictive nature to generate a special search query
+when it determines that the user/developer is searching against an encrypted string.
+
+The service makes this determination be examining the criteria of the QueryExpression passed
+to the CDS platform. If the QueryExperession contains a condition with a _Like_
+operator AND the value associated with that condition starts with encrypted search trigger 
+(# by default) and ends with a wildcard (%) character, then the service interprets the 
+QueryExpression as a request for encrypted search and it replaces the QueryExpression criteria
+with a new criteria based on conditions where fields that are configured for encryption are
+_Equal_ to the encrypted search value.
+
+The mechanism that creates the new filter criteria will only search against fields where
+the user has the required search role. 
 
 ###### Configuration    
 
 CDS field encryption is configured using XML data resources with configuration 
 information similar to the following example that directs the service to manage encryption for
 the ccllc_driverlicensenumber field of the contact entity.
-```XML
+```xml
 <configuration>
     <entity recordType="contact">
         <field fieldName="ccllc_driverlicensenumber"/>
     </entity>
 </configuration>
 ```
-This is a simplified example that relies on default values and does not implement role based
+This simplified configuration example relies on default values and does not implement role based
 access. See the [full documentation on configuration](Configuration.md) for additional options and deployment
 considerations.
 
